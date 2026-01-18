@@ -16,7 +16,7 @@ class TaskController extends Controller
      */
     public function index(): JsonResponse
     {
-        $tasks = Task::latest()->get();
+        $tasks = Task::latest()->paginate(15);
 
         return response()->json(TaskResource::collection($tasks));
     }
@@ -27,7 +27,7 @@ class TaskController extends Controller
     public function store(TaskRequest $request): JsonResponse
     {
         $task = Task::create($request->validated());
-        return response()->json($task, 201);
+        return response()->json(new TaskResource($task), 201);
     }
 
     /**
