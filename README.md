@@ -1,59 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Простое REST API для управления задачами. Выполнено в рамках тестового задания на позицию Junior PHP Developer. 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Стек технологий:** 
+- PHP 8.2
+- Laravel 12
+- SQLite
+- Laravel sail
 
-## About Laravel
+**Возможности API:** 
+- Получение списка задач
+- Получение одной задачи по ID
+- Создание новой задачи
+- Обновление задачи
+- Удаление задачи
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Каждая задача содержит:** 
+- название(title)
+- описание(description)
+- статус(status)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Установка и запуск:** 
+1. Клонирование репозитория
+   
+git clone https://github.com/sunsungiee/todo-api.git
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    cd todo-api
 
-## Learning Laravel
+**2. Создание .env** 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+    cp .env.example .env
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+*Т.к. проект использует SQLite, нужно создать файл базы данных*
 
-## Laravel Sponsors
+    touch database/database.sqlite
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**3. Запуск через Laravel Sail** 
 
-### Premium Partners
+    composer install
+    
+    ./vendor/bin/sail up -d
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**4. Генерация ключа** 
 
-## Contributing
+    ./vendor/bin/sail artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**5. Миграция** 
 
-## Code of Conduct
+    ./vendor/bin/sail artisan migrate 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**API доступно по адресу:** 
+http://localhost/api/tasks
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**API эндпоинты** 
+- Получить все задачи
+  - GET /api/tasks
 
-## License
+- Получить задачу по ID
+    - GET /api/tasks/{id}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Создать задачу
+    - POST /api/tasks
+
+- Обновить задачу
+    - PUT /api/tasks/{id}
+
+- Удалить задачу
+    - DELETE /api/tasks/{id}
+ 
+<img width="401" height="240" alt="изображение" src="https://github.com/user-attachments/assets/ce5547aa-cb0b-45f6-b9f6-fa8daf3e2edb" />
+
+
+**Реализована пагинация по страницам каждые 15 записей (http://localhost/api/tasks?page=1)** 
+
+
+**Для тестирования были созданы TaskSeeder и TaskFactory.** 
+
+    ./vendor/bin/sail artisan db:seed --class=TaskSeeder
+
+
+Тестирование проводилось вручную через curl.
